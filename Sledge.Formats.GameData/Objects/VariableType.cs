@@ -85,5 +85,7 @@
         Struct, // Source 2
         AnimGraph, // Source 2 (cs2)
         AnimGraphEnum, // Source 2 (cs2)
+        api, // Source2 (cs2)
+        animgraph2identifier, // Source2 (cs2)
     }
 }
