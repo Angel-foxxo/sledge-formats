@@ -305,7 +305,7 @@ Line""
         Assert.AreEqual(1, def.Classes.Count);
         Assert.AreEqual("New\nLine", def.Classes[0].Properties[0].Description);
 
-        Assert.ThrowsException<TokenParsingException>(() =>
+        Assert.Throws<TokenParsingException>(() =>
         {
             var format2 = new FgdFormatter { AllowNewlinesInStrings = false };
             var def2 = format2.Read(fgd);

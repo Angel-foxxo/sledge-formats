@@ -104,19 +104,19 @@ public class TestZipArchiveResolver
     public void TestFileNotFound()
     {
         var zfs = new ZipArchiveResolver(_instance);
-        Assert.ThrowsException<FileNotFoundException>(() =>
+        Assert.Throws<FileNotFoundException>(() =>
         {
             zfs.OpenFile("not_found.txt");
         });
-        Assert.ThrowsException<FileNotFoundException>(() =>
+        Assert.Throws<FileNotFoundException>(() =>
         {
             zfs.OpenFile("not/found");
         });
-        Assert.ThrowsException<DirectoryNotFoundException>(() =>
+        Assert.Throws<DirectoryNotFoundException>(() =>
         {
             zfs.GetFiles("not/found");
         });
-        Assert.ThrowsException<DirectoryNotFoundException>(() =>
+        Assert.Throws<DirectoryNotFoundException>(() =>
         {
             zfs.GetFolders("not/found");
         });

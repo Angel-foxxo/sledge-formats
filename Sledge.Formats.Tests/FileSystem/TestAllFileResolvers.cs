@@ -302,19 +302,19 @@ public class TestAllFileResolvers
     public void TestFileNotFound(string implementationName)
     {
         var resolver = _resolvers[implementationName];
-        Assert.ThrowsException<FileNotFoundException>(() =>
+        Assert.Throws<FileNotFoundException>(() =>
         {
             resolver.OpenFile("not_found.txt");
         });
-        Assert.ThrowsException<FileNotFoundException>(() =>
+        Assert.Throws<FileNotFoundException>(() =>
         {
             resolver.OpenFile("not/found");
         });
-        Assert.ThrowsException<DirectoryNotFoundException>(() =>
+        Assert.Throws<DirectoryNotFoundException>(() =>
         {
             resolver.GetFiles("not/found");
         });
-        Assert.ThrowsException<DirectoryNotFoundException>(() =>
+        Assert.Throws<DirectoryNotFoundException>(() =>
         {
             resolver.GetFolders("not/found");
         });

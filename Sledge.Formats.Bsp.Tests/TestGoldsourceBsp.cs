@@ -74,7 +74,7 @@ namespace Sledge.Formats.Bsp.Tests
         [TestMethod]
         public void TestStandardFormatWithWrongFlag()
         {
-            Assert.ThrowsException<Exception>(() => {
+            Assert.Throws<Exception>(() => {
                 try
                 {
                     using var file = GetFile("goldsource/aaa.bsp");
@@ -99,7 +99,7 @@ namespace Sledge.Formats.Bsp.Tests
         [TestMethod]
         public void TestBlueShiftFormatWithWrongFlag()
         {
-            Assert.ThrowsException<Exception>(() => {
+            Assert.Throws<Exception>(() => {
                 try
                 {
                     using var file = GetFile("goldsource/ba_hazard6.bsp");
