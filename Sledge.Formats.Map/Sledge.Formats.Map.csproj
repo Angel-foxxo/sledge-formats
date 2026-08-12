@@ -11,8 +11,8 @@
     <RepositoryUrl>https://github.com/LogicAndTrick/sledge-formats</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>half-life quake valve hammer worldcraft jackhammer jack rmf vmf map jmf</PackageTags>
-    <PackageReleaseNotes>Add JMF flags to entities so JACK loads them properly</PackageReleaseNotes>
-    <Version>1.2.8</Version>
+    <PackageReleaseNotes>Add support for Quake 2 surface flags in RMF files</PackageReleaseNotes>
+    <Version>1.2.9</Version>
 	<DebugType>full</DebugType>
 	<DebugSymbols>true</DebugSymbols>
   </PropertyGroup>

@@ -319,7 +319,10 @@ namespace Sledge.Formats.Map.Formats
             }
             else //if (version >= RmfVersion.Version18)
             {
-                br.ReadBytes(16); // Unused
+                br.ReadBytes(4); // Unused
+                face.SurfaceFlags = br.ReadInt32();
+                face.ContentFlags = br.ReadInt32();
+                face.Value = br.ReadInt32();
             }
 
             var numVerts = br.ReadInt32();

@@ -67,4 +67,35 @@ public class TestWorldcraftFormat
             Assert.AreEqual(face22.SmoothingGroups, face16.SmoothingGroups);
         }
     }
+
+    [TestMethod]
+    public void TestQuake2SurfaceFlags()
+    {
+        var format = new WorldcraftRmfFormat();
+
+        using var file = typeof(TestWorldcraftFormat).Assembly.GetManifestResourceStream($"Sledge.Formats.Map.Tests.Resources.rmf.test-quake2-1.8.rmf");
+
+        var map = format.Read(file);
+
+        var solid = (Solid)map.Worldspawn.Children[0];
+
+        var face1 = solid.Faces.Single(x => x.Value == 123.0f);
+        var face2 = solid.Faces.Single(x => x.Value == 222.0f);
+        var face3 = solid.Faces.Single(x => x.Value == 99.0f);
+
+        Assert.AreEqual(face1.ContentFlags, 1073676415);
+        Assert.AreEqual(face1.SurfaceFlags, 1023);
+
+        Assert.AreEqual(face2.ContentFlags, 268435472);
+        Assert.AreEqual(face2.SurfaceFlags, 1);
+
+        Assert.AreEqual(face3.ContentFlags, 2);
+        Assert.AreEqual(face3.SurfaceFlags, 1);
+
+        foreach (var f in solid.Faces.Where(x => x != face1 && x != face2 && x != face3))
+        {
+            Assert.AreEqual(f.SurfaceFlags, 0);
+            Assert.AreEqual(f.ContentFlags, 0);
+        }
+    }
 }
