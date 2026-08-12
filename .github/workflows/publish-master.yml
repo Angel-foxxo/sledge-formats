@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -19,5 +21,10 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Create packages
       run: dotnet pack --no-build --configuration Release --output . --include-symbols -p:SymbolPackageFormat=snupkg
+    - name: NuGet login
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: ${{ secrets.NUGET_USER }}
     - name: Publish packages
-      run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
+      run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{steps.login.outputs.NUGET_API_KEY}} --skip-duplicate
