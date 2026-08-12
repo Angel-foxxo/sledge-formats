@@ -1,0 +1,7 @@
+<Project>
+  <!--
+    SixLabors.ImageSharp allows licenses use by open source projects under the Apache 2.0 license.
+    sledge-formats is MIT licensed, so we don't need to have a license.
+  -->
+  <Target Name="SixLabors_ValidateLicense" />
+</Project>
