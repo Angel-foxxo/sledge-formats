@@ -1,13 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using Sledge.Formats.Texture.ImageSharp;
 using Sledge.Formats.Texture.Vtf;
+using System.IO;
+using System.Linq;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace Sledge.Formats.Texture.Tests.Vtf;
@@ -29,14 +28,14 @@ public class TestImageSharp
     [DataRow(VtfImageFormat.Uvwq8888)]
     public void TestSimpleImageLosslessFormats(VtfImageFormat imageFormat)
     {
-        var white = Rgba32.ParseHex("FAFBFCFF"); // almost white
-        var blue = Rgba32.ParseHex("0102FEFF");  // almost blue
+        var white = Color.ParseHex("FAFBFCFF").ToPixel<Rgba32>(); // almost white
+        var blue = Color.ParseHex("0102FEFF").ToPixel<Rgba32>();  // almost blue
 
         using var source = new Image<Rgba32>(1024, 1024, white);
-        source.Mutate(x =>
+        source.Mutate(ctx => ctx.Paint(canvas =>
         {
-            x.Fill(Color.ParseHex(blue.ToHex()), new RectangleF(300, 0, 100, 300));
-        });
+            canvas.Fill(Brushes.Solid(Color.ParseHex("0102FEFF")), new Rectangle(300, 0, 100, 300));
+        }));
 
         var builder = new VtfImageBuilder(new VtfImageBuilderOptions
         {
@@ -76,8 +75,7 @@ public class TestImageSharp
                     for (var x = 0; x < pixelRow.Length; x++)
                     {
                         ref var pixel = ref pixelRow[x];
-                        Rgba32 convertedPixel = new();
-                        pixel.ToRgba32(ref convertedPixel);
+                        var convertedPixel = pixel.ToRgba32();
                         if (y is >= 0 and < 300 && x is >= 300 and < 400)
                         {
                             Assert.AreEqual(blue, convertedPixel, $"\nExpected {blue.ToHex()} for pixel at [{x},{y}], but got {convertedPixel.ToHex()} instead.");
@@ -104,14 +102,14 @@ public class TestImageSharp
     [DataRow(VtfImageFormat.Bgra5551)]
     public void TestSimpleImageLossyFormats(VtfImageFormat imageFormat)
     {
-        var white = Rgba32.ParseHex("224466FF"); // almost white
-        var blue = Rgba32.ParseHex("EECCAAFF");  // almost blue
+        var white = Color.ParseHex("224466FF").ToPixel<Rgba32>(); // almost white
+        var blue = Color.ParseHex("EECCAAFF").ToPixel<Rgba32>();  // almost blue
 
         using var source = new Image<Rgba32>(1024, 1024, white);
-        source.Mutate(x =>
+        source.Mutate(ctx => ctx.Paint(canvas =>
         {
-            x.Fill(Color.ParseHex(blue.ToHex()), new RectangleF(300, 0, 100, 300));
-        });
+            canvas.Fill(Brushes.Solid(Color.ParseHex("EECCAAFF")), new Rectangle(300, 0, 100, 300));
+        }));
 
         var builder = new VtfImageBuilder(new VtfImageBuilderOptions
         {
@@ -151,8 +149,7 @@ public class TestImageSharp
                     for (var x = 0; x < pixelRow.Length; x++)
                     {
                         ref var pixel = ref pixelRow[x];
-                        Rgba32 convertedPixel = new();
-                        pixel.ToRgba32(ref convertedPixel);
+                        var convertedPixel = pixel.ToRgba32();
                         if (y is >= 0 and < 300 && x is >= 300 and < 400)
                         {
                             IsApproximatelyEqual(blue, convertedPixel, $"\nExpected approximately {blue.ToHex()} for pixel at [{x},{y}], but got {convertedPixel.ToHex()} instead.");

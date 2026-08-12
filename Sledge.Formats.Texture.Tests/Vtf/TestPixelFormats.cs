@@ -12,7 +12,7 @@ public class TestPixelFormats
     [TestMethod]
     public void TestBgr565ImageSharpNative()
     {
-        var pixel8888 = Rgba32.ParseHex("123456");
+        var pixel8888 = Color.ParseHex("123456").ToPixel<Rgba32>();
         var expectedData = new byte[] { 0xAA, 0x11 };
 
         using var src = new Image<Rgba32>(1, 1, pixel8888);
@@ -26,7 +26,7 @@ public class TestPixelFormats
     [TestMethod]
     public void TestRgb565CustomFormat()
     {
-        var pixel8888 = Rgba32.ParseHex("123456");
+        var pixel8888 = Color.ParseHex("123456").ToPixel<Rgba32>();
         var expectedData = new byte[] { 0xA2, 0x51 };
 
         using var src = new Image<Rgba32>(1, 1, pixel8888);
@@ -40,11 +40,10 @@ public class TestPixelFormats
     [TestMethod]
     public void TestRg88CustomFormat()
     {
-        var pixel8888 = Rgba32.ParseHex("123456");
+        var pixel8888 = Color.ParseHex("123456").ToPixel<Rgba32>();
         var expectedData = new byte[] { 0x12, 0x34 };
 
         using var src = new Image<Rgba32>(1, 1, pixel8888);
-        src.SaveAsPng(@"D:\Downloads\test.png");
         using var con = src.CloneAs<Rg88>();
 
         var spn = new byte[2];

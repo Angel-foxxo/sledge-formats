@@ -29,14 +29,14 @@ public struct Rgb565 : IPixel<Rgb565>, IPackedVector<ushort>
        ((PackedValue >> 11) & 0x1F) * (1F / 31F)
     );
 
-    public readonly PixelOperations<Rgb565> CreatePixelOperations()
+    static PixelOperations<Rgb565> IPixel<Rgb565>.CreatePixelOperations()
     {
         return new PixelOperations<Rgb565>();
     }
 
-    public void FromScaledVector4(Vector4 vector)
+    public static Rgb565 FromScaledVector4(Vector4 vector)
     {
-        FromVector4(vector);
+        return FromVector4(vector);
     }
 
     public readonly Vector4 ToScaledVector4()
@@ -44,9 +44,9 @@ public struct Rgb565 : IPixel<Rgb565>, IPackedVector<ushort>
         return ToVector4();
     }
 
-    public void FromVector4(Vector4 vector)
+    public static Rgb565 FromVector4(Vector4 vector)
     {
-        PackedValue = Pack(new Vector3(vector.X, vector.Y, vector.Z));
+        return new Rgb565(new Vector3(vector.X, vector.Y, vector.Z));
     }
 
     public readonly Vector4 ToVector4()
@@ -79,18 +79,54 @@ public struct Rgb565 : IPixel<Rgb565>, IPackedVector<ushort>
         return !left.Equals(right);
     }
 
-    public void FromArgb32(Argb32 source) => throw new NotImplementedException();
-    public void FromBgra5551(Bgra5551 source) => throw new NotImplementedException();
-    public void FromBgr24(Bgr24 source) => throw new NotImplementedException();
-    public void FromBgra32(Bgra32 source) => throw new NotImplementedException();
-    public void FromAbgr32(Abgr32 source) => throw new NotImplementedException();
-    public void FromL8(L8 source) => throw new NotImplementedException();
-    public void FromL16(L16 source) => throw new NotImplementedException();
-    public void FromLa16(La16 source) => throw new NotImplementedException();
-    public void FromLa32(La32 source) => throw new NotImplementedException();
-    public void FromRgb24(Rgb24 source) => throw new NotImplementedException();
-    public void FromRgba32(Rgba32 source) => throw new NotImplementedException();
-    public void ToRgba32(ref Rgba32 dest) => throw new NotImplementedException();
-    public void FromRgb48(Rgb48 source) => throw new NotImplementedException();
-    public void FromRgba64(Rgba64 source) => throw new NotImplementedException();
+    public static PixelTypeInfo GetPixelTypeInfo()
+    {
+        return PixelTypeInfo.Create<Rgb565>(
+            PixelComponentInfo.Create<Rgb565>(3, 5, 6, 5),
+            PixelColorType.RGB,
+            PixelAlphaRepresentation.None
+        );
+    }
+
+    public Rgba32 ToRgba32() => throw new NotImplementedException();
+
+    public readonly Vector4 ToUnassociatedScaledVector4() => ToScaledVector4();
+    public readonly Vector4 ToAssociatedScaledVector4() => ToScaledVector4();
+    public readonly Vector4 ToUnassociatedVector4() => ToVector4();
+    public readonly Vector4 ToAssociatedVector4() => ToVector4();
+
+    public static Rgb565 FromUnassociatedScaledVector4(Vector4 source) => FromScaledVector4(source);
+    public static Rgb565 FromAssociatedScaledVector4(Vector4 source)
+    {
+        UnPremultiply(ref source);
+        return FromScaledVector4(source);
+    }
+
+    public static Rgb565 FromUnassociatedVector4(Vector4 source) => FromVector4(source);
+    public static Rgb565 FromAssociatedVector4(Vector4 source)
+    {
+        UnPremultiply(ref source);
+        return FromVector4(source);
+    }
+
+    private static void UnPremultiply(ref Vector4 source)
+    {
+        var w = source.W;
+        if (w != 0) source /= w;
+        source.W = w;
+    }
+
+    public static Rgb565 FromArgb32(Argb32 source) => throw new NotImplementedException();
+    public static Rgb565 FromBgra5551(Bgra5551 source) => throw new NotImplementedException();
+    public static Rgb565 FromBgr24(Bgr24 source) => throw new NotImplementedException();
+    public static Rgb565 FromBgra32(Bgra32 source) => throw new NotImplementedException();
+    public static Rgb565 FromAbgr32(Abgr32 source) => throw new NotImplementedException();
+    public static Rgb565 FromL8(L8 source) => throw new NotImplementedException();
+    public static Rgb565 FromL16(L16 source) => throw new NotImplementedException();
+    public static Rgb565 FromLa16(La16 source) => throw new NotImplementedException();
+    public static Rgb565 FromLa32(La32 source) => throw new NotImplementedException();
+    public static Rgb565 FromRgb24(Rgb24 source) => throw new NotImplementedException();
+    public static Rgb565 FromRgba32(Rgba32 source) => throw new NotImplementedException();
+    public static Rgb565 FromRgb48(Rgb48 source) => throw new NotImplementedException();
+    public static Rgb565 FromRgba64(Rgba64 source) => throw new NotImplementedException();
 }
